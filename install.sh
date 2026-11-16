@@ -166,8 +166,8 @@ get_repo() {
   suggested="$(git config user.name | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
   ask "Name for your branch: first-last, lowercase" "$suggested"; branch="$REPLY"
   [ -z "$branch" ] && stop "Your branch needs a name." "Run this installer again and type it when asked."
-  if git show-ref --verify --quiet "refs/heads/$branch"; then git switch "$branch"
-  else git switch -c "$branch"; fi || stop "Couldn't make your branch '$branch'."
+  # Use the branch if it exists here or on your fork already; otherwise make it.
+  git switch "$branch" 2>/dev/null || git switch -c "$branch" || stop "Couldn't make your branch '$branch'."
   ok "On your branch: $branch"
 }
 

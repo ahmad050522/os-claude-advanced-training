@@ -134,8 +134,9 @@ function Install-TrainingSetup {
     $suggested = ((git config user.name).ToLower() -replace '[^a-z0-9]+', '-').Trim('-')
     $branch = Ask 'Name for your branch: first-last, lowercase' $suggested
     if (-not $branch) { Stop-Setup 'Your branch needs a name.' 'Run this installer again and type it when asked.' }
-    git show-ref --verify --quiet "refs/heads/$branch"
-    if ($LASTEXITCODE -eq 0) { git switch $branch } else { git switch -c $branch }
+    # Use the branch if it exists here or on your fork already; otherwise make it.
+    git switch $branch 2>$null
+    if ($LASTEXITCODE -ne 0) { git switch -c $branch }
     if ($LASTEXITCODE -ne 0) { Stop-Setup "Couldn't make your branch '$branch'." 'See README.md, "Get your copy of the repo", step 4.' }
     Ok "On your branch: $branch"
   }

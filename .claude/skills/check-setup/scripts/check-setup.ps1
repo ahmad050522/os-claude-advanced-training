@@ -89,12 +89,12 @@ if (-not $Top) {
   if (-not $Branch -or $Branch -eq "main") { Warn "You're not on your own branch" "make it once with: git switch -c first-last (your name), or move to it with: git switch first-last" }
   else { Pass "On your branch: $Branch" }
 
-  $Committed = (Run git @('ls-tree', '-r', '--name-only', 'HEAD', '--', 'raw', 'derived', 'outputs/history')) -split "`n" |
+  $Committed = (Run git @('ls-tree', '-r', '--name-only', 'HEAD', '--', 'raw', 'derived', 'outputs/history')) -split "\r?\n" |
     Where-Object { $_ -and ($_ -notlike "*/.gitkeep") }
   if ($Committed) { Fail ("These real-data files are committed, and this repo is public: " + ($Committed -join ", ")) "don't push. Tell Sean, and ask Claude Code to remove them from the commit (CONTRIBUTING.md)" }
   else { Pass "Nothing from raw/, derived/, or outputs/history/ is committed" }
 
-  $Staged = (Run git @('diff', '--cached', '--name-only')) -split "`n" |
+  $Staged = (Run git @('diff', '--cached', '--name-only')) -split "\r?\n" |
     Where-Object { $_ -match '^(raw|derived|outputs/history)/' }
   if ($Staged) { Fail ("Real-data files are staged for the next commit: " + ($Staged -join ", ")) "unstage them: git restore --staged <file>" }
 

@@ -72,6 +72,16 @@ The short version is below. Each step links to the full guide, which has the off
 1. **After installing anything, close the terminal window and open a new one** before you check it. The terminal only notices new programs when it starts. On Windows, a new tab isn't enough; open a new window.
 2. **To run a command,** type it (or paste it) and press Enter (`Return` on a Mac). When it asks for your computer's password, nothing shows while you type. That's normal.
 
+### The fast way: one command
+
+Do step 2 (make your GitHub account) first. Then open a terminal (step 1) and paste the line for your computer. It does steps 3 to 6, installs Claude Code (step 7), then makes your fork, downloads it, makes your branch, and runs the setup check. It stops to ask your name and email, and to have you approve the GitHub sign-in in your browser.
+
+| Mac (Terminal) | Windows (PowerShell) |
+|---|---|
+| `curl -fsSL https://raw.githubusercontent.com/fueled-io/os-claude-advanced-training/main/install.sh \| bash` | `irm https://raw.githubusercontent.com/fueled-io/os-claude-advanced-training/main/install.ps1 \| iex` |
+
+It never sees your passwords or one-time codes: you type those yourself. If it stops, it says why; fix that and run it again, and it skips whatever is already done. You still install Claude Desktop yourself (step 7, part 1), and sign in to Claude Code the first time you run it. If you'd rather go step by step, or the installer gets stuck, use the steps below.
+
 ### 1. Open a terminal
 
 | Mac | Windows |

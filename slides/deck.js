@@ -20,12 +20,18 @@
     '<button type="button" data-full aria-label="Full screen">Full screen</button>';
   document.body.appendChild(controls);
   var count = controls.querySelector(".count");
+  var progress = document.createElement("div");
+  progress.className = "progress";
+  progress.innerHTML = "<span></span>";
+  document.body.appendChild(progress);
+  var bar = progress.firstChild;
 
   var current = 0;
   function show(i) {
     current = Math.max(0, Math.min(slides.length - 1, i));
     slides.forEach(function (s, n) { s.classList.toggle("active", n === current); });
     count.textContent = current + 1 + " / " + slides.length;
+    bar.style.width = ((current + 1) / slides.length) * 100 + "%";
     if (location.hash !== "#" + (current + 1)) history.replaceState(null, "", "#" + (current + 1));
   }
   function fromHash() {
@@ -33,8 +39,10 @@
     return isNaN(n) ? 0 : n - 1;
   }
   function fullScreen() {
-    if (document.fullscreenElement) document.exitFullscreen();
-    else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function () {});
+    } catch (err) {}
   }
 
   controls.addEventListener("click", function (e) {
